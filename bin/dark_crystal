@@ -1,0 +1,83 @@
+#
+# A start to Dark Crystal
+#
+
+# colors
+bold="\033[1m";
+red="\033[0;31m";
+yellow="\033[1;33m";
+olive="\033[0;32m";
+green="\033[1;32m";
+cyan="\033[0;36m";
+purple="\033[0;35m";
+stop="\033[0m";
+
+
+function dark_crystal_usage () {
+
+echo
+echo  "$bold usage:$stop dark component <component-name>";
+echo
+
+}
+
+function dark_crystal_new () {
+  # ensure we have a name
+  if [ -z $1 ]; then
+    echo "$yellow Please supply the name. $stop";
+    return;
+  fi
+
+  newThing=$1
+
+  if test -d $newThing; then
+    echo "$red$newThing exists. Exiting";
+    exit 1;
+  fi
+
+  # make directory for new thing
+  mkdir $newThing;
+
+  # cd to directory
+  cd $newThing;
+
+  echo
+  echo "$green Making package.json $stop";
+  echo
+  # Setup package.json using npm init.
+  npm init
+
+  echo
+  echo "$green Making Gruntfile $stop";
+  echo
+  # curl gruntfile
+  curl https://raw.githubusercontent.com/upright-netizen/gruntfiles/master/grunt-connect-watch.js > Gruntfile.js
+
+  echo
+  echo "$green NPM nstalling Grunt plugins $stop";
+  echo
+  # 4. npm install necessities
+
+  # make a node_modules folder locally so they don't get installed somewhere else on the path
+  test -d node_modules || mkdir -p node_modules;
+
+  # install grunt contrib plugins
+  npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch;
+
+  # 5. make index.html
+  echo $newThing > index.html
+
+  echo
+  echo "$green Done. $stop";
+  echo
+  echo "$olive New component created at $green$(pwd)$stop";
+  echo
+
+  unset newThing
+}
+
+if [ -z $1 ]; then
+  dark_crystal_usage;
+else
+  [ $1 = "component" ] && dark_crystal_new $2;
+fi
