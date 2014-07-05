@@ -120,7 +120,7 @@ test $missingRequirements && exit 1;
 
 test -d $INSTALL_DIR && command -v curl > /dev/null && {
   echo "${green}Installing Dark Crystal at $INSTALL_DIR/$TOOL$stop";
-  curl 2> /dev/null https://raw.githubusercontent.com/upright-netizen/gruntfiles/master/getgruntfile.sh > $INSTALL_DIR/$TOOL;
+  curl 2> /dev/null https://raw.githubusercontent.com/upright-netizen/dark-crystal/master/bin/dark_crystal > $INSTALL_DIR/$TOOL;
   chmod 755 $INSTALL_DIR/$TOOL;
   echo "${olive}done$stop";
   echo
