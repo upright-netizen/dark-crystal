@@ -21,8 +21,15 @@ resources=/usr/local/dark-crystal/resources;
 
 function dark_crystal_usage () {
   echo
-  echo "  ${bold} usage:${stop} dark component <component-name>";
+  echo "  ${bold} usage:${stop} dark <command> [<args>]";
   echo
+cat <<USAGE
+  commands
+  ====================================================================
+    component <component name>    Create a new polymer web component
+    update                        Update dark crystal
+    uninstall                     Uninstall dark-crystal
+USAGE
 }
 
 function dark_crystal_generate_package_files {
@@ -181,6 +188,18 @@ function dark_crystal_update {
   ln -s /usr/local/dark-crystal/bin/dark-crystal /usr/local/bin/dark;
 }
 
+function dark_crystal_uninstall {
+  cat<<UNINSTALL
+
+    Coming Soon!!
+
+UNINSTALL
+}
+
+#
+# Init
+#
+
  [ -z $1 ] && {
   dark_crystal_usage;
   exit 1;
@@ -188,3 +207,4 @@ function dark_crystal_update {
 
   [ $1 = "component" ] && shift && dark_crystal_new $@;
   [ $1 = "update" ] && shift && dark_crystal_update $@;
+  [ $1 = 'uninstall' ] && shift && dark_crystal_uninstall $@;
