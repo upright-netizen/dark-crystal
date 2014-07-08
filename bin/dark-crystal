@@ -25,7 +25,7 @@ function dark_crystal_usage () {
   echo
 }
 
-function dark_crystal_generate_package_files () {
+function dark_crystal_generate_package_files {
 
   echo
   echo "$green Collecting information for package.json and bower.json $stop";
@@ -167,9 +167,18 @@ function dark_crystal_new {
   echo
 }
 
+function dark_crystal_update {
+  # WIP
+  cd /usr/local/dark-crystal;
+  git pull origin master;
+  rm /usr/local/bin/dark;
+  ln -s /usr/local/dark-cystral/bin/dark-crystal /usr/local/bin/dark;
+}
+
  [ -z $1 ] && {
   dark_crystal_usage;
   exit 1;
  }
 
   [ $1 = "component" ] && shift && dark_crystal_new $@;
+  [ $1 = "update" ] && shift && dark_crystal_update $@;
