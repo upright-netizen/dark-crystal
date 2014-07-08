@@ -6,8 +6,9 @@ set -e
 ### Setup
 ###
 
-INSTALL_DIR=/usr/local/dark_crystal;
+INSTALL_DIR=/usr/local;
 LINK_DIR=/usr/local/bin;
+NAME=dark-crystal;
 TOOL=dark;
 
 # colors
@@ -120,25 +121,15 @@ missingRequirements=true
 test $missingRequirements && exit 1;
 
 test -d $INSTALL_DIR && command -v curl > /dev/null && {
-  echo "${green}Installing Dark Crystal in $INSTALL_DIR/$TOOL$stop";
+  echo "${green}Installing Dark Crystal in $INSTALL_DIR/$NAME/$stop";
 
-  mkdir $INSTALL_DIR;
   cd $INSTALL_DIR;
 
-  echo "${green}Fetching from github$stop";
-  # get archive from github, sort of ghetto
-  curl 2> /dev/null -LOk https://github.com/upright-netizen/dark-crystal/archive/master.zip;
+  echo "${green}Cloning dark-crystal$stop";
+  git clone https://github.com/upright-netizen/$NAME.git
 
-  echo "${green}copying files$stop";
-  mv dark-crystal-master/bin $INSTALL_DIR/bin;
-  mv dark-crystal-master/resources $INSTALL_DIR/resources;
-
-  echo "${green}cleaning up$stop";
-  rm master.zip
-  rm -r dark-crystal-master;
-
-  echo "${green}creating symlink$stop";
-  ln -s $INSTALL_DIR/bin/dark_crystal $LINK_DIR/$TOOL
+  echo "${green}Symlinking to /usr/local/bin/$stop";
+  ln -s $INSTALL_DIR/$NAME/bin/$NAME $LINK_DIR/$TOOL
   chmod 755 $LINK_DIR/$TOOL;
 
   echo "${olive}done$stop";
