@@ -73,13 +73,13 @@ sed -e \
 $resources/bower.json.template > bower.json
 }
 
-function dark_crystal_npm_install {
+function dark_crystal_install_dependencies {
   #
-  # npm install necessities
+  # npm install
   #
 
   echo
-  echo "$green NPM nstalling Grunt plugins $stop";
+  echo "$green NPM install $stop";
   echo
 
   # make a node_modules folder locally so they don't get installed somewhere else on the path
@@ -87,6 +87,12 @@ function dark_crystal_npm_install {
 
   # install grunt contrib plugins
   npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch grunt-text-replace;
+
+  echo
+  echo "$green Bower install $stop";
+  echo
+
+  bower install;
 }
 
 function dark_crystal_create_folder {
@@ -157,7 +163,7 @@ function dark_crystal_new {
   dark_crystal_create_folder $component;
   dark_crystal_generate_package_files;
   dark_crystal_generate_gruntfile;
-  dark_crystal_npm_install;
+  dark_crystal_install_dependencies;
   dark_crystal_generate_html $component;
 
   echo
