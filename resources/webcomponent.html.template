@@ -1,0 +1,17 @@
+<!-- in my-element.html -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="%COMPONENT%">
+  <template>
+    <style> /*...*/ </style>
+    <div>
+      <section>
+        %COMPONENT%
+      </section>
+    </div>
+  </template>
+  <script>
+    // Register the element. Won't work unless this call is made.
+    Polymer('%COMPONENT%', {});
+  </script>
+</polymer-element>

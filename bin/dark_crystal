@@ -12,72 +12,164 @@ cyan="\033[0;36m";
 purple="\033[0;35m";
 stop="\033[0m";
 
+# Stubs and Templates
+resources=/Users/nathan/Code/dark-crystal/resources;
+
+#
+# Usage
+#
 
 function dark_crystal_usage () {
-
-echo
-echo  "$bold usage:$stop dark component <component-name>";
-echo
-
+  echo
+  echo "  ${bold} usage:${stop} dark component <component-name>";
+  echo
 }
 
-function dark_crystal_new () {
+function dark_crystal_generate_package_files () {
+
+  echo
+  echo "$green Collecting information for package.json and bower.json $stop";
+  echo
+
+#
+# Default Values
+#
+
+defaultName=$(basename "$PWD");
+defaultVersion="0.0.0";
+defaultAuthor=$(git config --global user.name);
+
+read -p "Name: ($defaultName) " name;
+name=${name:-$defaultName};
+
+read -p "Version: ($defaultVersion) " version;
+version=${version:-$defaultVersion};
+
+read -p "Description: " description;
+
+read -p "Author: ($defaultAuthor) " author
+author=${author:-$defaultAuthor};
+
+#
+# Generate package.json
+#
+
+sed -e \
+  "s;%NAME%;$name;g" -e \
+  "s;%VERSION%;$version;g" -e \
+  "s;%DESCRIPTION%;$description;g" -e \
+  "s;%AUTHOR%;$author;g" \
+$resources/package.json.template > package.json
+
+#
+# Generate bower.json
+#
+
+sed -e \
+  "s;%NAME%;$name;g" -e \
+  "s;%VERSION%;$version;g" -e \
+  "s;%DESCRIPTION%;$description;g" -e \
+  "s;%AUTHOR%;$author;g" \
+$resources/bower.json.template > bower.json
+}
+
+function dark_crystal_npm_install {
+  #
+  # npm install necessities
+  #
+
+  echo
+  echo "$green NPM nstalling Grunt plugins $stop";
+  echo
+
+  # make a node_modules folder locally so they don't get installed somewhere else on the path
+  test -d node_modules || mkdir -p node_modules;
+
+  # install grunt contrib plugins
+  npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch grunt-text-replace;
+}
+
+function dark_crystal_create_folder {
+  folder=$1
+
+  if test -d $folder; then
+    echo "$red$folder exists. Exiting";
+    exit 1;
+  fi
+
+  # make directory for new thing
+  mkdir $folder;
+
+  # cd to directory
+  cd $folder;
+
+  unset folder
+}
+
+function dark_crystal_generate_gruntfile {
+  echo
+  echo "$green Making Gruntfile $stop";
+  echo
+  # curl gruntfile
+  cat $resources/Gruntfile.js > Gruntfile.js;
+}
+
+
+function dark_crystal_generate_html {
+  local webcomponent=$1
+
+  #
+  # Generate web-component
+  #
+
+  echo
+  echo "$green Creating src and dist folders $stop";
+  echo
+
+  # make src and dist directories
+  mkdir src dist;
+
+  echo
+  echo "$green Generating web component: $webcomponent $stop";
+  echo
+
+  # generate web component
+  sed -e \
+    "s;%COMPONENT%;$webcomponent;g" \
+  $resources/webcomponent.html.template > src/$webcomponent.html
+
+
+  # generate index.html
+  sed -e \
+    "s;%COMPONENT%;$webcomponent;g" \
+  $resources/index.html.template > index.html
+}
+
+function dark_crystal_new {
   # ensure we have a name
   if [ -z $1 ]; then
     echo "$yellow Please supply the name. $stop";
     return;
   fi
 
-  newThing=$1
+  local component=$1
 
-  if test -d $newThing; then
-    echo "$red$newThing exists. Exiting";
-    exit 1;
-  fi
-
-  # make directory for new thing
-  mkdir $newThing;
-
-  # cd to directory
-  cd $newThing;
-
-  echo
-  echo "$green Making package.json $stop";
-  echo
-  # Setup package.json using npm init.
-  npm init
-
-  echo
-  echo "$green Making Gruntfile $stop";
-  echo
-  # curl gruntfile
-  curl https://raw.githubusercontent.com/upright-netizen/gruntfiles/master/grunt-connect-watch.js > Gruntfile.js
-
-  echo
-  echo "$green NPM nstalling Grunt plugins $stop";
-  echo
-  # 4. npm install necessities
-
-  # make a node_modules folder locally so they don't get installed somewhere else on the path
-  test -d node_modules || mkdir -p node_modules;
-
-  # install grunt contrib plugins
-  npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch;
-
-  # 5. make index.html
-  echo $newThing > index.html
+  dark_crystal_create_folder $component;
+  dark_crystal_generate_package_files;
+  dark_crystal_generate_gruntfile;
+  dark_crystal_npm_install;
+  dark_crystal_generate_html $component;
 
   echo
   echo "$green Done. $stop";
   echo
   echo "$olive New component created at $green$(pwd)$stop";
   echo
-
-  unset newThing
 }
 
-if [ -z $1 ]; then
+ [ -z $1 ] && {
   dark_crystal_usage;
-else
-  [ $1 = "component" ] && dark_crystal_new $2;
-fi
+  exit 1;
+ }
+
+  [ $1 = "component" ] && shift && dark_crystal_new $@;

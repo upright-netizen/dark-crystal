@@ -6,7 +6,8 @@ set -e
 ### Setup
 ###
 
-INSTALL_DIR=/usr/local/bin;
+INSTALL_DIR=/usr/local/dark_crystal;
+LINK_DIR=/usr/local/bin;
 TOOL=dark;
 
 # colors
@@ -77,7 +78,7 @@ WIDE
 
 missingRequirements=
 
-hash git 2>/dev/null || {
+command -v git >/dev/null || {
   echo "$red$bold  Missing Git $stop";
   echo      "$red  more information at";
   echo          "  http://git-scm.com";
@@ -87,7 +88,7 @@ hash git 2>/dev/null || {
 missingRequirements=true
 }
 
-hash node 2>/dev/null && hash npm 2>/dev/null || {
+command -v node >/dev/null && command -v npm >/dev/null || {
   echo "$red$bold  Missing node and/or npm $stop";
   echo      "$red  more information at";
   echo          "  http://nodejs.org/";
@@ -97,7 +98,7 @@ hash node 2>/dev/null && hash npm 2>/dev/null || {
 missingRequirements=true
 }
 
-hash grunt 2>/dev/null || {
+command -v grunt >/dev/null || {
   echo "$red$bold  Missing grunt-cli $stop";
   echo      "$red  more information at";
   echo          "  http://gruntjs.com/getting-started";
@@ -107,7 +108,7 @@ hash grunt 2>/dev/null || {
 missingRequirements=true
 }
 
-hash bower 2>/dev/null || {
+command -v bower >/dev/null || {
   echo "$red$bold  Missing Bower $stop";
   echo      "$red  more information at";
   echo          "  http://bower.io/";
@@ -119,9 +120,27 @@ missingRequirements=true
 test $missingRequirements && exit 1;
 
 test -d $INSTALL_DIR && command -v curl > /dev/null && {
-  echo "${green}Installing Dark Crystal at $INSTALL_DIR/$TOOL$stop";
-  curl 2> /dev/null https://raw.githubusercontent.com/upright-netizen/dark-crystal/master/bin/dark_crystal > $INSTALL_DIR/$TOOL;
-  chmod 755 $INSTALL_DIR/$TOOL;
+  echo "${green}Installing Dark Crystal in $INSTALL_DIR/$TOOL$stop";
+
+  mkdir $INSTALL_DIR;
+  cd $INSTALL_DIR;
+
+  echo "${green}Fetching from github$stop";
+  # get archive from github, sort of ghetto
+  curl 2> /dev/null -LOk https://github.com/upright-netizen/dark-crystal/archive/master.zip;
+
+  echo "${green}copying files$stop";
+  mv dark_crystal_master/bin $INSTALL_DIR/bin;
+  mv dark_crystal_master/resources $INSTALL_DIR/resources;
+
+  echo "${green}cleaning up$stop";
+  rm master.zip
+  rm -r dark_crystal_master;
+
+  echo "${green}creating symlink$stop";
+  ln -s $INSTALL_DIR/bin/dark_crystal $LINK_DIR/$TOOL
+  chmod 755 $LINK_DIR/$TOOL;
+
   echo "${olive}done$stop";
   echo
 
@@ -136,6 +155,11 @@ test -d $INSTALL_DIR && command -v curl > /dev/null && {
   fi
 
   echo
-  echo "Dark Crystal tools installed at$purple$INSTALL_DIR/$TOOL$stop";
+  echo "Dark Crystal installed in $purple$INSTALL_DIR/$stop";
+  echo
+  echo "Dark Crystal tools linked in $purple$LINK_DIR/$TOOL$stop";
+  echo
+  echo "Make sure that $LINK_DIR is on your \$PATH";
+  echo
   echo "type ${purple}${bold}dark${stop} to invoke it's wonders";
 }
