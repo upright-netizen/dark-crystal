@@ -178,7 +178,7 @@ function dark_crystal_update {
   cd /usr/local/dark-crystal;
   git pull origin master;
   rm /usr/local/bin/dark;
-  ln -s /usr/local/dark-cystral/bin/dark-crystal /usr/local/bin/dark;
+  ln -s /usr/local/dark-crystal/bin/dark-crystal /usr/local/bin/dark;
 }
 
  [ -z $1 ] && {
