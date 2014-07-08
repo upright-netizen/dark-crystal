@@ -13,7 +13,7 @@ purple="\033[0;35m";
 stop="\033[0m";
 
 # Stubs and Templates
-resources=/Users/nathan/Code/dark-crystal/resources;
+resources=/usr/local/dark-crystal/resources;
 
 #
 # Usage
