@@ -130,12 +130,12 @@ test -d $INSTALL_DIR && command -v curl > /dev/null && {
   curl 2> /dev/null -LOk https://github.com/upright-netizen/dark-crystal/archive/master.zip;
 
   echo "${green}copying files$stop";
-  mv dark_crystal_master/bin $INSTALL_DIR/bin;
-  mv dark_crystal_master/resources $INSTALL_DIR/resources;
+  mv dark-crystal-master/bin $INSTALL_DIR/bin;
+  mv dark-crystal-master/resources $INSTALL_DIR/resources;
 
   echo "${green}cleaning up$stop";
   rm master.zip
-  rm -r dark_crystal_master;
+  rm -r dark-crystal-master;
 
   echo "${green}creating symlink$stop";
   ln -s $INSTALL_DIR/bin/dark_crystal $LINK_DIR/$TOOL
