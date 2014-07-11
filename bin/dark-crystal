@@ -53,9 +53,9 @@ resources=/usr/local/dark-crystal/resources;
 #
 
 function dark_crystal_usage () {
-  echo "${back_purple}"
+  echo "${purple}"
   echo
-  echo "  usage: dark <command> [<args>]";
+  echo "  usage: ${bold}dark${bold_off} <${boldRed}command${purple}> [${red}args${purple}]";
 cat <<USAGEHEADER
 
   Commands
@@ -66,6 +66,8 @@ cat <<USAGE
     component <component name>    Create a new polymer web component
     update                        Update dark crystal
     uninstall                     Uninstall dark-crystal
+
+
 USAGE
 }
 
