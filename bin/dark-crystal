@@ -15,31 +15,10 @@ bold="\033[1m";
 bold_off="\033[22m";
 
 # Text colors
-black="\033[30m";
 red="\033[0;31m";
-boldRed="\033[1;31m";
 green="\033[0;32m";
-boldGreen="\033[1;32m";
 yellow="\033[0;33m";
-boldYellow="\033[1;33m";
-blue="\033[0;34m";
-boldBlue="\033[1;34m";
 purple="\033[0;35m";
-boldPurple="\033[1;35m";
-cyan="\033[0;36m";
-boldCyan="\033[1;36m";
-white="\033[0;37m";
-boldWhite="\033[1;37m";
-
-# Background colors
-back_black="\033[0;40m";
-back_red="\033[0;41;30m";
-back_green="\033[0;42;30m";
-back_brown="\033[0;43;30m";
-back_blue="\033[0;44;30m";
-back_purple="\033[0;45;30m";
-back_cyan="\033[0;46;30m";
-back_white="\033[0;47;30m";
 
 # Resets all
 stop="\033[0m";
@@ -133,10 +112,10 @@ function dark_crystal_generate_package_files {
   read -p "Author: ($defaultAuthor) " author
   author=${author:-$defaultAuthor};
 
-  dark_crystal_generate_package_json $name $version "$description" $author;
+  dark_crystal_generate_package_json "$name" "$version" "$description" "$author";
 
-  test $classification = "component" && {
-    dark_crystal_generate_bower_json $name $version $description $author;
+  test "$classification" = "component" && {
+    dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
   }
 }
 
@@ -181,16 +160,16 @@ function dark_crystal_install_prototype_dependencies {
 function dark_crystal_create_folder {
   folder=$1
 
-  if test -d $folder; then
+  if test -d "$folder"; then
     echo "$red$folder exists. Exiting";
     exit 1;
   fi
 
   # make directory for new thing
-  mkdir $folder;
+  mkdir "$folder";
 
   # cd to directory
-  cd $folder;
+  cd "$folder";
 
   unset folder
 }
@@ -202,7 +181,7 @@ function dark_crystal_generate_gruntfile {
 
   local classification=$1
 
-  cat $resources/$classification-gruntfile.js > Gruntfile.js;
+  cat "$resources/$classification-gruntfile.js" > Gruntfile.js;
 }
 
 function dark_crystal_generate_component_html {
@@ -215,12 +194,12 @@ function dark_crystal_generate_component_html {
   # generate web component
   sed -e \
     "s;%COMPONENT%;$webcomponent;g" \
-  $resources/webcomponent.html.template > src/$webcomponent.html
+  "$resources/webcomponent.html.template" > "src/$webcomponent.html"
 
   # generate index.html
   sed -e \
     "s;%COMPONENT%;$webcomponent;g" \
-  $resources/component-index.html.template > index.html
+  "$resources/component-index.html.template" > "index.html"
 }
 
 function dark_crystal_generate_prototype_html {
@@ -232,7 +211,7 @@ function dark_crystal_generate_prototype_html {
 
   sed -e \
     "s;%PROTOTYPE%;$name;g" \
-  $resources/prototype-index.html.template > index.html
+  "$resources/prototype-index.html.template" > "index.html"
 }
 
 function dark_crystal_generate_html {
@@ -246,18 +225,18 @@ function dark_crystal_generate_html {
   # make src and dist directories
   mkdir src dist;
 
-  test $classification = "component" && {
-    dark_crystal_generate_component_html $name;
+  test "$classification" = "component" && {
+    dark_crystal_generate_component_html "$name";
   }
 
-  test $classification = "prototype" && {
-    dark_crystal_generate_prototype_html $name;
+  test "$classification" = "prototype" && {
+    dark_crystal_generate_prototype_html "$name";
   }
 }
 
 function dark_crystal_new_component {
   # ensure we have a name
-  if [ -z $1 ]; then
+  if [ -z "$1" ]; then
     echo "$yellow Please supply the name. $stop";
     return;
   fi
@@ -265,11 +244,11 @@ function dark_crystal_new_component {
   local component=$1
   local classification=component
 
-  dark_crystal_create_folder $component;
+  dark_crystal_create_folder "$component";
   dark_crystal_generate_package_files $classification;
   dark_crystal_generate_gruntfile $classification;
   dark_crystal_install_component_dependencies;
-  dark_crystal_generate_html $classification $component;
+  dark_crystal_generate_html $classification "$component";
 
   echo
   echo "$green Done. $stop";
@@ -280,7 +259,7 @@ function dark_crystal_new_component {
 
 function dark_crystal_new_prototype {
   # ensure we have a name
-  if [ -z $1 ]; then
+  if [ -z "$1" ]; then
     echo "$yellow Please supply the name. $stop";
     return;
   fi
@@ -288,11 +267,11 @@ function dark_crystal_new_prototype {
   local name=$1
   local classification=prototype
 
-  dark_crystal_create_folder $name;
+  dark_crystal_create_folder "$name";
   dark_crystal_generate_package_files $classification;
   dark_crystal_generate_gruntfile $classification;
   dark_crystal_install_prototype_dependencies;
-  dark_crystal_generate_html $classification $name;
+  dark_crystal_generate_html $classification "$name";
 
   echo
   echo "$green Done. $stop";
@@ -321,12 +300,12 @@ UNINSTALL
 # Init
 #
 
- [ -z $1 ] && {
+ [ -z "$1" ] && {
   dark_crystal_usage;
   exit 1;
  }
 
-  [ $1 = "component" ] && shift && dark_crystal_new_component $@;
-  [ $1 = "prototype" ] && shift && dark_crystal_new_prototype $@;
-  [ $1 = "update" ] && shift && dark_crystal_update $@;
-  [ $1 = 'uninstall' ] && shift && dark_crystal_uninstall $@;
+  [ "$1" = "component" ] && shift && dark_crystal_new_component "$@";
+  [ "$1" = "prototype" ] && shift && dark_crystal_new_prototype "$@";
+  [ "$1" = "update" ] && shift && dark_crystal_update "$@";
+  [ "$1" = 'uninstall' ] && shift && dark_crystal_uninstall "$@";
