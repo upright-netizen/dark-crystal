@@ -54,19 +54,16 @@ resources=/usr/local/dark-crystal/resources;
 
 function dark_crystal_usage () {
   echo "${purple}"
-  echo
-  echo "  usage: ${bold}dark${bold_off} <${boldRed}command${purple}> [${red}args${purple}]";
-cat <<USAGEHEADER
-
-  Commands
-USAGEHEADER
+  echo "  usage: ${bold}dark${bold_off} <${bold}command${bold_off}> [${bold}args${bold_off}]";
   echo "${stop}"
 cat <<USAGE
+  Commands
+
   ====================================================================
-    component <component name>    Create a new polymer web component
+
+    component <name>              Create a new polymer web component
     update                        Update dark crystal
     uninstall                     Uninstall dark-crystal
-
 
 USAGE
 }
