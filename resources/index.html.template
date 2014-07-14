@@ -14,8 +14,10 @@
       <h1 class="title">%COMPONENT%</h1>
     </header>
 
-    <!-- 3. Declare the element. Configure using its attributes. -->
-    <%COMPONENT%></%COMPONENT%>
+    <main class="main">
+      <!-- 3. Declare the element. Configure using its attributes. -->
+      <%COMPONENT%></%COMPONENT%>
+    </main>
 
     <script>
       // Wait for 'polymer-ready'. Ensures the element is upgraded.
