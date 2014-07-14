@@ -118,6 +118,7 @@ function dark_crystal_generate_package_files {
   classification=$1
   defaultName=$(basename "$PWD");
   defaultVersion="0.0.0";
+  defaultDescription="<description here>";
   defaultAuthor=$(git config --global user.name);
 
   read -p "Name: ($defaultName) " name;
@@ -127,7 +128,7 @@ function dark_crystal_generate_package_files {
   version=${version:-$defaultVersion};
 
   read -p "Description: " description;
-  description=${description:-""};
+  description=${description:-$defaultDescription};
 
   read -p "Author: ($defaultAuthor) " author
   author=${author:-$defaultAuthor};
@@ -223,14 +224,14 @@ function dark_crystal_generate_component_html {
 }
 
 function dark_crystal_generate_prototype_html {
-  local prototype=$1
+  local name=$1
 
   echo
   echo "$green Generating index.html $stop";
   echo
 
   sed -e \
-    "s;%PROTOTYPE%;$webcomponent;g" \
+    "s;%PROTOTYPE%;$name;g" \
   $resources/prototype-index.html.template > index.html
 }
 
