@@ -68,30 +68,12 @@ cat <<USAGE
 USAGE
 }
 
-function dark_crystal_generate_package_files {
+function dark_crystal_generate_package_json {
 
-  echo
-  echo "$green Collecting information for package.json and bower.json $stop";
-  echo
-
-#
-# Default Values
-#
-
-defaultName=$(basename "$PWD");
-defaultVersion="0.0.0";
-defaultAuthor=$(git config --global user.name);
-
-read -p "Name: ($defaultName) " name;
-name=${name:-$defaultName};
-
-read -p "Version: ($defaultVersion) " version;
-version=${version:-$defaultVersion};
-
-read -p "Description: " description;
-
-read -p "Author: ($defaultAuthor) " author
-author=${author:-$defaultAuthor};
+  local name=$1
+  local version=$2
+  local description=$3
+  local author=$4
 
 #
 # Generate package.json
@@ -104,19 +86,59 @@ sed -e \
   "s;%AUTHOR%;$author;g" \
 $resources/package.json.template > package.json
 
-#
-# Generate bower.json
-#
-
-sed -e \
-  "s;%NAME%;$name;g" -e \
-  "s;%VERSION%;$version;g" -e \
-  "s;%DESCRIPTION%;$description;g" -e \
-  "s;%AUTHOR%;$author;g" \
-$resources/bower.json.template > bower.json
 }
 
-function dark_crystal_install_dependencies {
+function dark_crystal_generate_bower_json {
+  local name=$1
+  local version=$2
+  local description=$3
+  local author=$4
+
+  #
+  # Generate bower.json
+  #
+
+  sed -e \
+    "s;%NAME%;$name;g" -e \
+    "s;%VERSION%;$version;g" -e \
+    "s;%DESCRIPTION%;$description;g" -e \
+    "s;%AUTHOR%;$author;g" \
+  $resources/bower.json.template > bower.json
+}
+
+function dark_crystal_generate_package_files {
+  echo
+  echo "$green Collecting information for config files $stop";
+  echo
+
+  #
+  # Default Values
+  #
+  classification=$1
+  defaultName=$(basename "$PWD");
+  defaultVersion="0.0.0";
+  defaultAuthor=$(git config --global user.name);
+
+  read -p "Name: ($defaultName) " name;
+  name=${name:-$defaultName};
+
+  read -p "Version: ($defaultVersion) " version;
+  version=${version:-$defaultVersion};
+
+  read -p "Description: " description;
+
+  read -p "Author: ($defaultAuthor) " author
+  author=${author:-$defaultAuthor};
+
+
+  dark_crystal_generate_package_json $name $version $description $author;
+
+  test $classification = "component" && {
+    dark_crystal_generate_bower_json $name $version $description $author;
+  }
+}
+
+function dark_crystal_install_component_dependencies {
   #
   # npm install
   #
@@ -159,24 +181,24 @@ function dark_crystal_generate_gruntfile {
   echo
   echo "$green Making Gruntfile $stop";
   echo
-  # curl gruntfile
-  cat $resources/Gruntfile.js > Gruntfile.js;
+
+  local classification=$1
+
+  echo
+  echo
+  echo $classification;
+  echo
+  echo
+
+  ls $resources/$classification-gruntfile.js
+
+  exit 0;
+
+  cat $resources/$classification-gruntfile.js > Gruntfile.js;
 }
 
-
-function dark_crystal_generate_html {
+function dark_crystal_generate_component_html {
   local webcomponent=$1
-
-  #
-  # Generate web-component
-  #
-
-  echo
-  echo "$green Creating src and dist folders $stop";
-  echo
-
-  # make src and dist directories
-  mkdir src dist;
 
   echo
   echo "$green Generating web component: $webcomponent $stop";
@@ -187,14 +209,45 @@ function dark_crystal_generate_html {
     "s;%COMPONENT%;$webcomponent;g" \
   $resources/webcomponent.html.template > src/$webcomponent.html
 
-
   # generate index.html
   sed -e \
     "s;%COMPONENT%;$webcomponent;g" \
-  $resources/index.html.template > index.html
+  $resources/component-index.html.template > index.html
 }
 
-function dark_crystal_new {
+function dark_crystal_generate_prototype_html {
+  local prototype=$1
+
+  echo
+  echo "$green Generating index.html $stop";
+  echo
+
+  sed -e \
+    "s;%PROTOTYPE%;$webcomponent;g" \
+  $resources/prototype-index.html.template > index.html
+}
+
+function dark_crystal_generate_html {
+  local classification=$1
+  local name=$2
+
+  echo
+  echo "$green Creating src and dist folders $stop";
+  echo
+
+  # make src and dist directories
+  mkdir src dist;
+
+  test $classification = "component" && {
+    dark_crystal_generate_component_html $name;
+  }
+
+  test $classification = "prototype" && {
+    dark_crystal_generate_prototype_html $name;
+  }
+}
+
+function dark_crystal_new_component {
   # ensure we have a name
   if [ -z $1 ]; then
     echo "$yellow Please supply the name. $stop";
@@ -202,12 +255,13 @@ function dark_crystal_new {
   fi
 
   local component=$1
+  local classification=component
 
   dark_crystal_create_folder $component;
-  dark_crystal_generate_package_files;
-  dark_crystal_generate_gruntfile;
-  dark_crystal_install_dependencies;
-  dark_crystal_generate_html $component;
+  dark_crystal_generate_package_files $classification;
+  dark_crystal_generate_gruntfile $classification;
+  dark_crystal_install_component_dependencies $classification;
+  dark_crystal_generate_html $classification $component;
 
   echo
   echo "$green Done. $stop";
@@ -241,6 +295,6 @@ UNINSTALL
   exit 1;
  }
 
-  [ $1 = "component" ] && shift && dark_crystal_new $@;
+  [ $1 = "component" ] && shift && dark_crystal_new_component $@;
   [ $1 = "update" ] && shift && dark_crystal_update $@;
   [ $1 = 'uninstall' ] && shift && dark_crystal_uninstall $@;
