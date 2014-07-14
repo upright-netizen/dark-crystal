@@ -62,6 +62,7 @@ cat <<USAGE
   ====================================================================
 
     component <name>              Create a new polymer web component
+    prototype <name>              Create a new html prototype
     update                        Update dark crystal
     uninstall                     Uninstall dark-crystal
 
@@ -131,7 +132,6 @@ function dark_crystal_generate_package_files {
   read -p "Author: ($defaultAuthor) " author
   author=${author:-$defaultAuthor};
 
-
   dark_crystal_generate_package_json $name $version $description $author;
 
   test $classification = "component" && {
@@ -159,6 +159,22 @@ function dark_crystal_install_component_dependencies {
   echo
 
   bower install;
+}
+
+function dark_crystal_install_prototype_dependencies {
+  #
+  # npm install
+  #
+
+  echo
+  echo "$green NPM install $stop";
+  echo
+
+  # make a node_modules folder locally so they don't get installed somewhere else on the path
+  test -d node_modules || mkdir -p node_modules;
+
+  # install grunt contrib plugins
+  npm install --save-dev grunt-contrib-connect;
 }
 
 function dark_crystal_create_folder {
@@ -251,7 +267,7 @@ function dark_crystal_new_component {
   dark_crystal_create_folder $component;
   dark_crystal_generate_package_files $classification;
   dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_component_dependencies $classification;
+  dark_crystal_install_component_dependencies;
   dark_crystal_generate_html $classification $component;
 
   echo
@@ -274,7 +290,7 @@ function dark_crystal_new_prototype {
   dark_crystal_create_folder $name;
   dark_crystal_generate_package_files $classification;
   dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_component_dependencies $classification;
+  dark_crystal_install_prototype_dependencies;
   dark_crystal_generate_html $classification $name;
 
   echo
