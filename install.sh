@@ -14,7 +14,6 @@ TOOL=dark;
 # colors
 bold="\033[1m";
 red="\033[0;31m";
-yellow="\033[1;33m";
 olive="\033[0;32m";
 green="\033[1;32m";
 purple="\033[0;35m";
