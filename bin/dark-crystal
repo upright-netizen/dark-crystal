@@ -188,6 +188,13 @@ function dark_crystal_generate_component_html {
   local webcomponent=$1
 
   echo
+  echo "$green Creating src and dist folders $stop";
+  echo
+
+  # make src and dist directories
+  mkdir src dist;
+
+  echo
   echo "$green Generating web component: $webcomponent $stop";
   echo
 
@@ -217,13 +224,6 @@ function dark_crystal_generate_prototype_html {
 function dark_crystal_generate_html {
   local classification=$1
   local name=$2
-
-  echo
-  echo "$green Creating src and dist folders $stop";
-  echo
-
-  # make src and dist directories
-  mkdir src dist;
 
   test "$classification" = "component" && {
     dark_crystal_generate_component_html "$name";
