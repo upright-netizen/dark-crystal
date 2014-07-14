@@ -184,16 +184,6 @@ function dark_crystal_generate_gruntfile {
 
   local classification=$1
 
-  echo
-  echo
-  echo $classification;
-  echo
-  echo
-
-  ls $resources/$classification-gruntfile.js
-
-  exit 0;
-
   cat $resources/$classification-gruntfile.js > Gruntfile.js;
 }
 
