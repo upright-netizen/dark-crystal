@@ -126,6 +126,7 @@ function dark_crystal_generate_package_files {
   version=${version:-$defaultVersion};
 
   read -p "Description: " description;
+  description=${description:-""};
 
   read -p "Author: ($defaultAuthor) " author
   author=${author:-$defaultAuthor};
@@ -260,6 +261,29 @@ function dark_crystal_new_component {
   echo
 }
 
+function dark_crystal_new_prototype {
+  # ensure we have a name
+  if [ -z $1 ]; then
+    echo "$yellow Please supply the name. $stop";
+    return;
+  fi
+
+  local name=$1
+  local classification=prototype
+
+  dark_crystal_create_folder $name;
+  dark_crystal_generate_package_files $classification;
+  dark_crystal_generate_gruntfile $classification;
+  dark_crystal_install_component_dependencies $classification;
+  dark_crystal_generate_html $classification $name;
+
+  echo
+  echo "$green Done. $stop";
+  echo
+  echo "$olive New component created at $green$(pwd)$stop";
+  echo
+}
+
 function dark_crystal_update {
   # WIP
   cd /usr/local/dark-crystal;
@@ -286,5 +310,6 @@ UNINSTALL
  }
 
   [ $1 = "component" ] && shift && dark_crystal_new_component $@;
+  [ $1 = "prototype" ] && shift && dark_crystal_new_prototype $@;
   [ $1 = "update" ] && shift && dark_crystal_update $@;
   [ $1 = 'uninstall' ] && shift && dark_crystal_uninstall $@;

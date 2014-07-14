@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang=en-us>
+  <head>
+    <meta charset=utf-8>
+    <title>%PROTOTYPE%</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">%PROTOTYPE%</h1>
+    </header>
+
+    <main class="main">
+    </main>
+  </body>
+</html>
