@@ -1,0 +1,23 @@
+{
+  "name": "%NAME%",
+  "version": "%VERSION%",
+  "authors": [
+    "%AUTHOR%"
+  ],
+  "description": "%DESCRIPTION%",
+  "main": "app/app.js",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "ISC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

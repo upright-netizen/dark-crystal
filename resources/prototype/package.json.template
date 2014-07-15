@@ -1,0 +1,13 @@
+{
+  "name": "%NAME%",
+  "repository": "",
+  "version": "%VERSION%",
+  "description": "%DESCRIPTION%",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "start": "grunt",
+    "test": "echo \"No tests\" && exit 1"
+  },
+  "author": "%AUTHOR%",
+  "license": "ISC"
+}
