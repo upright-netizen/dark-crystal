@@ -1,3 +1,4 @@
+
 #
 # A start to Dark Crystal
 #
@@ -16,6 +17,7 @@ bold_off="\033[22m";
 
 # Text colors
 red="\033[0;31m";
+back_red="\033[0;41;30m";
 green="\033[0;32m";
 yellow="\033[0;33m";
 purple="\033[0;35m";
@@ -32,6 +34,15 @@ resources=/usr/local/dark-crystal/resources;
 #
 
 function dark_crystal_usage () {
+
+  linkLocation=$(readlink "$0")
+  linkLocationDir=$(dirname "$linkLocation");
+  test "$linkLocationDir" != "/usr/local/dark-crystal/bin" && {
+    echo "${back_red}"
+    echo "     [dev mode]                                                        ${stop}";
+
+  }
+
   echo "${purple}"
   echo "  usage: ${bold}dark${bold_off} <${bold}command${bold_off}> [${bold}args${bold_off}]";
   echo "${stop}"
@@ -296,6 +307,21 @@ function dark_crystal_uninstall {
 UNINSTALL
 }
 
+function dark_crystal_link {
+  devLocation=${1:-~/Code/dark-crystal};
+
+  test -d "$devLocation" && {
+    echo
+    echo "${green}Linking dev version of dark-crystal${stop}";
+    echo
+    rm /usr/local/bin/dark;
+    ln -s "$devLocation"/bin/dark-crystal /usr/local/bin/dark;
+    return;
+  }
+
+  echo "${yellow}Can't find location of dark crystal${stop}";
+}
+
 #
 # Init
 #
@@ -309,3 +335,5 @@ UNINSTALL
   test "$1" = "prototype" && shift && dark_crystal_new_prototype "$@";
   test "$1" = "update" && shift && dark_crystal_update "$@";
   test "$1" = 'uninstall' && shift && dark_crystal_uninstall "$@";
+  # dev options
+  test "$1" = 'link' && shift && dark_crystal_link "$@";
