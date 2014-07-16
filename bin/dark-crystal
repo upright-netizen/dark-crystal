@@ -85,10 +85,10 @@ USAGE
 # Import the libs
 #
 
-. $lib/common.sh;
-. $lib/component_functions.sh;
-. $lib/prototype_functions.sh;
-. $lib/utils.sh;
+. "$lib/common.sh";
+. "$lib/component_functions.sh";
+. "$lib/prototype_functions.sh";
+. "$lib/utils.sh";
 
 
 #
