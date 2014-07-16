@@ -7,7 +7,7 @@ set -e
 ###
 
 INSTALL_DIR=/usr/local;
-LINK_DIR=/usr/local/bin;
+LINK_DIR=${INSTALL_DIR}/bin;
 NAME=dark-crystal;
 TOOL=dark;
 

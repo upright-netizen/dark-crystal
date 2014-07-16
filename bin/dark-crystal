@@ -25,9 +25,26 @@ purple="\033[0;35m";
 # Resets all
 stop="\033[0m";
 
+# Check for dev mode
+
+# check dev mode
+linkLocation=$(readlink "$0")
+linkLocationDir=$(dirname "$linkLocation");
+test "$linkLocationDir" != "/usr/local/dark-crystal/bin" && devMode=true;
 
 # Stubs and Templates
-resources=/usr/local/dark-crystal/resources;
+installDir=/usr/local;
+rootDir=${installDir}/dark-crystal;
+#
+# if in dev mode, reset base directories
+#
+test $devMode = true && {
+  rootDir=$(dirname "$linkLocationDir");
+  installDir=$(dirname "$rootDir");
+};
+
+resources=${rootDir}/resources;
+lib=${rootDir}/lib;
 
 
 #       '##::::'##::'######:::::'###:::::'######:::'########:
@@ -42,9 +59,7 @@ resources=/usr/local/dark-crystal/resources;
 
 function dark_crystal_usage () {
 
-  linkLocation=$(readlink "$0")
-  linkLocationDir=$(dirname "$linkLocation");
-  test "$linkLocationDir" != "/usr/local/dark-crystal/bin" && {
+  test $devMode = true && {
     echo "${back_red}"
     echo "     [dev mode]                                                        ${stop}";
 
@@ -66,314 +81,15 @@ cat <<USAGE
 USAGE
 }
 
-#              .oooooo.                                                                                          .
-#             d8P'  `Y8b                                                                                       .o8
-#            888           .ooooo.  ooo. .oo.  .oo.   oo.ooooo.   .ooooo.  ooo. .oo.    .ooooo.  ooo. .oo.   .o888oo
-#            888          d88' `88b `888P"Y88bP"Y88b   888' `88b d88' `88b `888P"Y88b  d88' `88b `888P"Y88b    888
-#            888          888   888  888   888   888   888   888 888   888  888   888  888ooo888  888   888    888
-#            `88b    ooo  888   888  888   888   888   888   888 888   888  888   888  888    .o  888   888    888 .
-#             `Y8bood8P'  `Y8bod8P' o888o o888o o888o  888bod8P' `Y8bod8P' o888o o888o `Y8bod8P' o888o o888o   "888"
-#                                                      888
-#                                                     o888o
-
-
-function dark_crystal_generate_package_json {
-
-  local name=$1
-  local version=$2
-  local description=$3
-  local author=$4
-
 #
-# Generate package.json
+# Import the libs
 #
 
-sed -e \
-  "s;%NAME%;$name;g" -e \
-  "s;%VERSION%;$version;g" -e \
-  "s;%DESCRIPTION%;$description;g" -e \
-  "s;%AUTHOR%;$author;g" \
-$resources/package.json.template > package.json
+. $lib/common.sh;
+. $lib/component_functions.sh;
+. $lib/prototype_functions.sh;
+. $lib/utils.sh;
 
-}
-
-function dark_crystal_generate_bower_json {
-  local name=$1
-  local version=$2
-  local description=$3
-  local author=$4
-
-  #
-  # Generate bower.json
-  #
-
-  sed -e \
-    "s;%NAME%;$name;g" -e \
-    "s;%VERSION%;$version;g" -e \
-    "s;%DESCRIPTION%;$description;g" -e \
-    "s;%AUTHOR%;$author;g" \
-  $resources/bower.json.template > bower.json
-}
-
-function dark_crystal_generate_package_files {
-  echo
-  echo "$green Collecting information for config files $stop";
-  echo
-
-  #
-  # Default Values
-  #
-  classification=$1
-  defaultName=$(basename "$PWD");
-  defaultVersion="0.0.0";
-  defaultDescription="<description here>";
-  defaultAuthor=$(git config --global user.name);
-
-  read -p "Name: ($defaultName) " name;
-  name=${name:-$defaultName};
-
-  read -p "Version: ($defaultVersion) " version;
-  version=${version:-$defaultVersion};
-
-  read -p "Description: " description;
-  description=${description:-$defaultDescription};
-
-  read -p "Author: ($defaultAuthor) " author
-  author=${author:-$defaultAuthor};
-
-  dark_crystal_generate_package_json "$name" "$version" "$description" "$author";
-
-  test "$classification" = "component" && {
-    dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
-  }
-}
-
-function dark_crystal_install_component_dependencies {
-  #
-  # npm install
-  #
-
-  echo
-  echo "$green NPM install $stop";
-  echo
-
-  # make a node_modules folder locally so they don't get installed somewhere else on the path
-  test -d node_modules || mkdir -p node_modules;
-
-  # install grunt contrib plugins
-  npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch grunt-text-replace;
-
-  echo
-  echo "$green Bower install $stop";
-  echo
-
-  bower install;
-}
-
-function dark_crystal_create_folder {
-  folder=$1
-
-  if test -d "$folder"; then
-    echo "$red$folder exists. Exiting";
-    exit 1;
-  fi
-
-  # make directory for new thing
-  mkdir "$folder";
-
-  # cd to directory
-  cd "$folder";
-
-  unset folder
-}
-
-function dark_crystal_generate_gruntfile {
-  echo
-  echo "$green Making Gruntfile $stop";
-  echo
-
-  local classification=$1
-
-  cat "$resources/$classification-gruntfile.js" > Gruntfile.js;
-}
-
-function dark_crystal_generate_component_html {
-  local webcomponent=$1
-
-  echo
-  echo "$green Creating src and dist folders $stop";
-  echo
-
-  # make src and dist directories
-  mkdir src dist;
-
-  echo
-  echo "$green Generating web component: $webcomponent $stop";
-  echo
-
-  # generate web component
-  sed -e \
-    "s;%COMPONENT%;$webcomponent;g" \
-  "$resources/webcomponent.html.template" > "src/$webcomponent.html"
-
-  # generate index.html
-  sed -e \
-    "s;%COMPONENT%;$webcomponent;g" \
-  "$resources/component-index.html.template" > "index.html"
-}
-
-
-function dark_crystal_generate_html {
-  local classification=$1
-  local name=$2
-
-  test "$classification" = "component" && {
-    dark_crystal_generate_component_html "$name";
-  }
-
-  test "$classification" = "prototype" && {
-    dark_crystal_generate_prototype_html "$name";
-  }
-}
-
-function dark_crystal_new_component {
-  # ensure we have a name
-  if [ -z "$1" ]; then
-    echo "$yellow Please supply the name. $stop";
-    return;
-  fi
-
-  local component=$1
-  local classification=component
-
-  dark_crystal_create_folder "$component";
-  dark_crystal_generate_package_files $classification;
-  dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_component_dependencies;
-  dark_crystal_generate_html $classification "$component";
-
-  echo
-  echo "$green Done. $stop";
-  echo
-  echo "$olive New component created at $green$(pwd)$stop";
-  echo
-}
-
-
-
-#                ooooooooo.                          .                 .
-#                `888   `Y88.                      .o8               .o8
-#                 888   .d88' oooo d8b  .ooooo.  .o888oo  .ooooo.  .o888oo oooo    ooo oo.ooooo.   .ooooo.
-#                 888ooo88P'  `888""8P d88' `88b   888   d88' `88b   888    `88.  .8'   888' `88b d88' `88b
-#                 888          888     888   888   888   888   888   888     `88..8'    888   888 888ooo888
-#                 888          888     888   888   888 . 888   888   888 .    `888'     888   888 888    .o
-#                o888o        d888b    `Y8bod8P'   "888" `Y8bod8P'   "888"     .8'      888bod8P' `Y8bod8P'
-#                                                                          .o..P'       888
-#                                                                          `Y8P'       o888o
-
-
-function dark_crystal_install_prototype_dependencies {
-  #
-  # npm install
-  #
-
-  echo
-  echo "$green NPM install $stop";
-  echo
-
-  # make a node_modules folder locally so they don't get installed somewhere else on the path
-  test -d node_modules || mkdir -p node_modules;
-
-  # install grunt contrib plugins
-  npm install --save-dev grunt-contrib-connect;
-}
-
-function dark_crystal_generate_prototype_html {
-  local name=$1
-
-  echo
-  echo "$green Generating index.html $stop";
-  echo
-
-  sed -e \
-    "s;%PROTOTYPE%;$name;g" \
-  "$resources/prototype-index.html.template" > "index.html"
-}
-
-
-function dark_crystal_new_prototype {
-  # ensure we have a name
-  if [ -z "$1" ]; then
-    echo "$yellow Please supply the name. $stop";
-    return;
-  fi
-
-  local name=$1
-  local classification=prototype
-
-  dark_crystal_create_folder "$name";
-  dark_crystal_generate_package_files $classification;
-  dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_prototype_dependencies;
-  dark_crystal_generate_html $classification "$name";
-
-  echo
-  echo "$green Done. $stop";
-  echo
-  echo "$olive New component created at $green$(pwd)$stop";
-  echo
-}
-
-
-
-
-
-#                        ooooo     ooo     .    o8o  oooo
-#                        `888'     `8'   .o8    `"'  `888
-#                         888       8  .o888oo oooo   888   .oooo.o
-#                         888       8    888   `888   888  d88(  "8
-#                         888       8    888    888   888  `"Y88b.
-#                         `88.    .8'    888 .  888   888  o.  )88b
-#                           `YbodP'      "888" o888o o888o 8""888P'
-
-
-
-
-
-function dark_crystal_update {
-  # WIP
-  cd /usr/local/dark-crystal;
-  git pull origin master;
-  rm /usr/local/bin/dark;
-  ln -s /usr/local/dark-crystal/bin/dark-crystal /usr/local/bin/dark;
-}
-
-function dark_crystal_uninstall {
-  echo "${red}"
-  read -p "Are you sure? " -n 1 -r
-  echo
-  echo "${stop}"
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
-    test -d /usr/local/dark-crystal && rm -rf /usr/local/dark-crystal;
-    test -e /usr/local/bin/dark && rm /usr/local/bin/dark;
-  fi
-}
-
-function dark_crystal_link {
-  devLocation=${1:-~/Code/dark-crystal};
-
-  test -d "$devLocation" && {
-    echo
-    echo "${green}Linking dev version of dark-crystal${stop}";
-    echo
-    rm /usr/local/bin/dark;
-    ln -s "$devLocation"/bin/dark-crystal /usr/local/bin/dark;
-    return;
-  }
-
-  echo "${yellow}Can't find location of dark crystal${stop}";
-}
 
 #
 # Init
