@@ -3,13 +3,16 @@
   <head>
     <meta charset=utf-8>
     <title>%PROTOTYPE%</title>
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <header class="header">
       <h1 class="title">%PROTOTYPE%</h1>
     </header>
 
-    <main class="main">
+    <main class="main" id="main">
     </main>
+
+    <script data-main="app/config" src="/bower_components/requirejs/require.js"></script>
   </body>
 </html>

@@ -63,10 +63,7 @@ function dark_crystal_generate_package_files {
   author=${author:-$defaultAuthor};
 
   dark_crystal_generate_package_json "$name" "$version" "$description" "$author";
-
-  test "$classification" = "component" && {
-    dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
-  }
+  dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
 }
 
 function dark_crystal_create_folder {

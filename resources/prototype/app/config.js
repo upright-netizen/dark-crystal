@@ -1,9 +1,11 @@
 /*global requirejs: true */
 requirejs.config({
-  deps: [],
+  deps: [
+    'app/app.js'
+  ],
   shim: {},
   paths: {
-    src: "../js",
+    src: '../js',
   },
   packages: []
 });

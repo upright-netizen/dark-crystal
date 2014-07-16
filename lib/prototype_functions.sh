@@ -11,7 +11,7 @@
 #                                                                          `Y8P'       o888o
 
 
-function dark_crystal_install_prototype_dependencies {
+function install_prototype_dependencies {
   #
   # npm install
   #
@@ -23,11 +23,27 @@ function dark_crystal_install_prototype_dependencies {
   # make a node_modules folder locally so they don't get installed somewhere else on the path
   test -d node_modules || mkdir -p node_modules;
 
-  # install grunt contrib plugins
   npm install --save-dev grunt-contrib-connect;
+  npm install --save-dev grunt-bower-requirejs;
+
+  bower install --save requirejs
 }
 
-function dark_crystal_generate_prototype_html {
+function create_prototype_folder {
+  local folder="$1";
+
+  if test -d "$folder"; then
+    echo "$red$folder exists. Exiting";
+    exit 1;
+  fi
+
+  cp -r "$resources/prototype" "$folder";
+  cd "$folder";
+
+  unset folder;
+}
+
+function generate_prototype_html {
   local name=$1
 
   echo
@@ -36,7 +52,7 @@ function dark_crystal_generate_prototype_html {
 
   sed -e \
     "s;%PROTOTYPE%;$name;g" \
-  "$resources/prototype-index.html.template" > "index.html"
+  "index.html.template" > "index.html"
 }
 
 
@@ -50,11 +66,12 @@ function dark_crystal_new_prototype {
   local name=$1
   local classification=prototype
 
-  dark_crystal_create_folder "$name";
+  create_prototype_folder "$name";
   dark_crystal_generate_package_files $classification;
-  dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_prototype_dependencies;
-  dark_crystal_generate_html $classification "$name";
+  install_prototype_dependencies;
+  generate_prototype_html $name;
+
+
 
   echo
   echo "$green Done. $stop";

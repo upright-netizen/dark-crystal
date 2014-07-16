@@ -9,7 +9,7 @@
 #                                                      888
 #                                                     o888o
 
-function dark_crystal_install_component_dependencies {
+function install_component_dependencies {
   #
   # npm install
   #
@@ -22,13 +22,16 @@ function dark_crystal_install_component_dependencies {
   test -d node_modules || mkdir -p node_modules;
 
   # install grunt contrib plugins
-  npm install --save-dev grunt-contrib-jshint grunt-contrib-connect grunt-contrib-watch grunt-text-replace;
+  npm install --save-dev grunt-contrib-jshint
+  npm install --save-dev grunt-contrib-connect
+  npm install --save-dev grunt-contrib-watch
+  npm install --save-dev grunt-text-replace;
 
   echo
   echo "$green Bower install $stop";
   echo
 
-  bower install;
+  bower install --save polymer;
 }
 
 function dark_crystal_generate_component_html {
@@ -69,7 +72,7 @@ function dark_crystal_new_component {
   dark_crystal_create_folder "$component";
   dark_crystal_generate_package_files $classification;
   dark_crystal_generate_gruntfile $classification;
-  dark_crystal_install_component_dependencies;
+  install_component_dependencies;
   dark_crystal_generate_html $classification "$component";
 
   echo

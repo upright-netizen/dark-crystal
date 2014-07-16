@@ -34,4 +34,5 @@ define([
             "Y8P' 8P""Y88P'   8I   8I   `Y8888P"Y888
 
  */
+  console.log('alive');
 });
