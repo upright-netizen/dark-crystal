@@ -38,7 +38,7 @@ rootDir=${installDir}/dark-crystal;
 #
 # if in dev mode, reset base directories
 #
-test $devMode = true && {
+test "$devMode" = true && {
   rootDir=$(dirname "$linkLocationDir");
   installDir=$(dirname "$rootDir");
 };
@@ -59,7 +59,7 @@ lib=${rootDir}/lib;
 
 function dark_crystal_usage () {
 
-  test $devMode = true && {
+  test "$devMode" = true && {
     echo "${back_red}"
     echo "     [dev mode]                                                        ${stop}";
 
