@@ -53,6 +53,8 @@ function generate_prototype_html {
   sed -e \
     "s;%PROTOTYPE%;$name;g" \
   "index.html.template" > "index.html"
+
+  rm index.html.template;
 }
 
 
