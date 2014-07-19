@@ -78,7 +78,7 @@ WIDE
 
 missingRequirements=
 
-command -v git >/dev/null || {
+command -v git > /dev/null || {
   echo "$red$bold  Missing Git $stop";
   echo      "$red  more information at";
   echo          "  http://git-scm.com";
@@ -88,7 +88,7 @@ command -v git >/dev/null || {
 missingRequirements=true
 }
 
-command -v node >/dev/null && command -v npm >/dev/null || {
+command -v node > /dev/null && command -v npm >/dev/null || {
   echo "$red$bold  Missing node and/or npm $stop";
   echo      "$red  more information at";
   echo          "  http://nodejs.org/";
@@ -98,7 +98,7 @@ command -v node >/dev/null && command -v npm >/dev/null || {
 missingRequirements=true
 }
 
-command -v grunt >/dev/null || {
+command -v grunt > /dev/null || {
   echo "$red$bold  Missing grunt-cli $stop";
   echo      "$red  more information at";
   echo          "  http://gruntjs.com/getting-started";
@@ -108,7 +108,7 @@ command -v grunt >/dev/null || {
 missingRequirements=true
 }
 
-command -v bower >/dev/null || {
+command -v bower > /dev/null || {
   echo "$red$bold  Missing Bower $stop";
   echo      "$red  more information at";
   echo          "  http://bower.io/";
