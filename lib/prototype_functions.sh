@@ -69,7 +69,7 @@ function dark_crystal_new_prototype {
   local classification=prototype
 
   create_prototype_folder "$name";
-  dark_crystal_generate_package_files $classification;
+  dark_crystal_generate_package_files;
   install_prototype_dependencies;
   generate_prototype_html $name;
 

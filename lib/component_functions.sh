@@ -35,7 +35,21 @@ function install_component_dependencies {
   bower install --save polymer;
 }
 
-function dark_crystal_generate_component_html {
+function create_component_folder {
+  local folder="$1";
+
+  test -d "$folder" && {
+    log "$folder exists. Exiting" -c "red";
+    exit 1;
+  }
+
+  cp -r "$resources/component" "$folder";
+  cd "$folder";
+
+  unset folder;
+}
+
+function generate_component_html {
   local webcomponent=$1
 
   log
@@ -53,12 +67,14 @@ function dark_crystal_generate_component_html {
   # generate web component
   sed -e \
     "s;%COMPONENT%;$webcomponent;g" \
-  "$resources/webcomponent.html.template" > "src/$webcomponent.html"
+  "webcomponent.html.template" > "src/$webcomponent.html"
+  rm webcomponent.html.template;
 
   # generate index.html
   sed -e \
     "s;%COMPONENT%;$webcomponent;g" \
-  "$resources/component-index.html.template" > "index.html"
+  "component-index.html.template" > "index.html"
+  rm component-index.html.template
 }
 
 function dark_crystal_new_component {
@@ -71,11 +87,10 @@ function dark_crystal_new_component {
   local component=$1
   local classification=component
 
-  dark_crystal_create_folder "$component";
-  dark_crystal_generate_package_files $classification;
-  dark_crystal_generate_gruntfile $classification;
+  create_component_folder "$component";
+  dark_crystal_generate_package_files;
   install_component_dependencies;
-  dark_crystal_generate_html $classification "$component";
+  generate_component_html "$component";
 
   log
   log "Done." -c "green";

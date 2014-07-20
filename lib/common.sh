@@ -46,7 +46,6 @@ function dark_crystal_generate_package_files {
   #
   # Default Values
   #
-  classification=$1
   defaultName=$(basename "$PWD");
   defaultVersion="0.0.0";
   defaultDescription="<description here>";
@@ -66,46 +65,4 @@ function dark_crystal_generate_package_files {
 
   dark_crystal_generate_package_json "$name" "$version" "$description" "$author";
   dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
-}
-
-function dark_crystal_create_folder {
-  folder=$1
-
-  if test -d "$folder"; then
-    log "$folder exists. Exiting" -c "red";
-    exit 1;
-  fi
-
-  # make directory for new thing
-  mkdir "$folder";
-
-  # cd to directory
-  cd "$folder";
-
-  unset folder
-}
-
-function dark_crystal_generate_gruntfile {
-  log
-  log "Making Gruntfile" -c "green";
-  log
-
-  local classification=$1
-
-  cat "$resources/$classification-gruntfile.js" > Gruntfile.js;
-}
-
-
-
-function dark_crystal_generate_html {
-  local classification=$1
-  local name=$2
-
-  test "$classification" = "component" && {
-    dark_crystal_generate_component_html "$name";
-  }
-
-  test "$classification" = "prototype" && {
-    dark_crystal_generate_prototype_html "$name";
-  }
 }
