@@ -15,9 +15,9 @@ function install_component_dependencies {
   # npm install
   #
 
-  echo
-  echo "$green NPM install $stop";
-  echo
+  log
+  log "NPM install" -c "green";
+  log
 
   # make a node_modules folder locally so they don't get installed somewhere else on the path
   test -d node_modules || mkdir -p node_modules;
@@ -28,9 +28,9 @@ function install_component_dependencies {
   npm install --save-dev grunt-contrib-watch
   npm install --save-dev grunt-text-replace;
 
-  echo
-  echo "$green Bower install $stop";
-  echo
+  log
+  log "Bower install" -c "green";
+  log
 
   bower install --save polymer;
 }
@@ -38,16 +38,17 @@ function install_component_dependencies {
 function dark_crystal_generate_component_html {
   local webcomponent=$1
 
-  echo
-  echo "$green Creating src and dist folders $stop";
-  echo
+  log
+  log "Creating src and dist folders" -c "green";
+  log
 
   # make src and dist directories
   mkdir src dist;
 
-  echo
-  echo "$green Generating web component: $webcomponent $stop";
-  echo
+  log
+  log "Generating web component: " -c "green" -n;
+  log "$webcomponent" -c "green";
+  log
 
   # generate web component
   sed -e \
@@ -63,7 +64,7 @@ function dark_crystal_generate_component_html {
 function dark_crystal_new_component {
   # ensure we have a name
   if [ -z "$1" ]; then
-    echo "$yellow Please supply the name. $stop";
+    log "Please supply a name." -c "yellow";
     return;
   fi
 
@@ -76,9 +77,10 @@ function dark_crystal_new_component {
   install_component_dependencies;
   dark_crystal_generate_html $classification "$component";
 
-  echo
-  echo "$green Done. $stop";
-  echo
-  echo "$olive New component created at $green$(pwd)$stop";
-  echo
+  log
+  log "Done." -c "green";
+  log
+  log "New component created at " -c "green" -n;
+  log "$(pwd)" -b -c "green";
+  log
 }

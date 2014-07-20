@@ -16,9 +16,9 @@ function install_prototype_dependencies {
   # npm install
   #
 
-  echo
-  echo "$green NPM install $stop";
-  echo
+  log
+  log "NPM install" -c "green";
+  log
 
   # make a node_modules folder locally so they don't get installed somewhere else on the path
   test -d node_modules || mkdir -p node_modules;
@@ -33,7 +33,7 @@ function create_prototype_folder {
   local folder="$1";
 
   if test -d "$folder"; then
-    echo "$red$folder exists. Exiting";
+    log "$folder exists. Exiting" -c "red";
     exit 1;
   fi
 
@@ -46,9 +46,9 @@ function create_prototype_folder {
 function generate_prototype_html {
   local name=$1
 
-  echo
-  echo "$green Generating index.html $stop";
-  echo
+  log
+  log "Generating index.html" -c "green";
+  log
 
   sed -e \
     "s;%PROTOTYPE%;$name;g" \
@@ -61,7 +61,7 @@ function generate_prototype_html {
 function dark_crystal_new_prototype {
   # ensure we have a name
   if [ -z "$1" ]; then
-    echo "$yellow Please supply the name. $stop";
+    log "Please supply a name." -c "yellow";
     return;
   fi
 
@@ -73,12 +73,11 @@ function dark_crystal_new_prototype {
   install_prototype_dependencies;
   generate_prototype_html $name;
 
-
-
-  echo
-  echo "$green Done. $stop";
-  echo
-  echo "$olive New component created at $green$(pwd)$stop";
-  echo
+  log
+  log "Done." -c "green";
+  log
+  log "New prototype created at " -c "green" -n;
+  log "$(pwd)" -b -c "green";
+  log
 }
 

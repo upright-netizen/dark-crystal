@@ -4,29 +4,6 @@
 # Dark Crystal
 #
 
-#
-#       8""""8
-#       8    " eeeee e     eeeee eeeee  eeeee
-#       8e     8  88 8     8  88 8   8  8   "
-#       88     8   8 8e    8   8 8eee8e 8eeee
-#       88   e 8   8 88    8   8 88   8    88
-#       88eee8 8eee8 88eee 8eee8 88   8 8ee88
-#
-
-bold="\033[1m";
-bold_off="\033[22m";
-
-# Text colors
-red="\033[0;31m";
-back_red="\033[0;41;30m";
-green="\033[0;32m";
-yellow="\033[0;33m";
-purple="\033[0;35m";
-
-# Resets all
-stop="\033[0m";
-
-# Check for dev mode
 
 # check dev mode
 linkLocation=$(readlink "$0")
@@ -47,6 +24,11 @@ test "$devMode" = true && {
 resources=${rootDir}/resources;
 lib=${rootDir}/lib;
 
+#
+# import color logger
+#
+. "$lib/color_logger.sh";
+
 
 #       '##::::'##::'######:::::'###:::::'######:::'########:
 #        ##:::: ##:'##... ##:::'## ##:::'##... ##:: ##.....::
@@ -61,14 +43,17 @@ lib=${rootDir}/lib;
 function dark_crystal_usage () {
 
   test "$devMode" = true && {
-    echo "${back_red}"
-    echo "     [dev mode]                                                        ${stop}";
-
+    log
+    log "     [dev mode]                                                        " -k "red" -c "black";
   }
 
-  echo "${purple}"
-  echo "  usage: ${bold}dark${bold_off} <${bold}command${bold_off}> [${bold}args${bold_off}]";
-  echo "${stop}"
+  log;
+  log "  " -n;
+  log "usage: " -n -c "purple";
+  log "dark" -bn -c "purple";
+  log " [command] [args]" -c "purple";
+  log
+
 cat <<USAGE
   Commands
 

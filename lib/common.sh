@@ -39,9 +39,9 @@ function dark_crystal_generate_bower_json {
 }
 
 function dark_crystal_generate_package_files {
-  echo
-  echo "$green Collecting information for config files $stop";
-  echo
+  log
+  log "Collecting information for config files" -c "green";
+  log
 
   #
   # Default Values
@@ -72,7 +72,7 @@ function dark_crystal_create_folder {
   folder=$1
 
   if test -d "$folder"; then
-    echo "$red$folder exists. Exiting";
+    log "$folder exists. Exiting" -c "red";
     exit 1;
   fi
 
@@ -86,9 +86,9 @@ function dark_crystal_create_folder {
 }
 
 function dark_crystal_generate_gruntfile {
-  echo
-  echo "$green Making Gruntfile $stop";
-  echo
+  log
+  log "Making Gruntfile" -c "green";
+  log
 
   local classification=$1
 
