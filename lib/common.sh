@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 function dark_crystal_generate_package_json {
 
   local name=$1
@@ -50,16 +52,16 @@ function dark_crystal_generate_package_files {
   defaultDescription="<description here>";
   defaultAuthor=$(git config --global user.name);
 
-  read -p "Name: ($defaultName) " name;
+  read "name?Name: ($defaultName) ";
   name=${name:-$defaultName};
 
-  read -p "Version: ($defaultVersion) " version;
+  read "version?Version: ($defaultVersion) ";
   version=${version:-$defaultVersion};
 
-  read -p "Description: " description;
+  read "description?Description: ";
   description=${description:-$defaultDescription};
 
-  read -p "Author: ($defaultAuthor) " author
+  read "author?Author: ($defaultAuthor) ";
   author=${author:-$defaultAuthor};
 
   dark_crystal_generate_package_json "$name" "$version" "$description" "$author";

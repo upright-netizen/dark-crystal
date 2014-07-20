@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 
 #              .oooooo.                                                                                          .
 #             d8P'  `Y8b                                                                                       .o8

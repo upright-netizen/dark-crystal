@@ -117,6 +117,14 @@ command -v bower > /dev/null || {
 missingRequirements=true
 }
 
+command -v zsh > /dev/null || {
+  echo "$red$bold  Missing zsh $stop";
+  echo      "$red  more information at";
+  echo          "  http://www.zsh.org/";
+  echo          "  -------------------$stop";
+  echo "  zsh can be downloaded from$red http://sourceforge.net/projects/zsh/files/$stop";
+missingRequirements=true
+}
 test $missingRequirements && exit 1;
 
 test -d $INSTALL_DIR && command -v curl > /dev/null && {

@@ -1,4 +1,4 @@
-
+#!/usr/bin/env zsh
 
 #                ooooooooo.                          .                 .
 #                `888   `Y88.                      .o8               .o8
