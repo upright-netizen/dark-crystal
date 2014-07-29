@@ -88,8 +88,18 @@ command -v git > /dev/null || {
 missingRequirements=true
 }
 
-command -v node > /dev/null && command -v npm >/dev/null || {
-  echo "$red$bold  Missing node and/or npm $stop";
+command -v node > /dev/null >/dev/null || {
+  echo "$red$bold  Missing node $stop";
+  echo      "$red  more information at";
+  echo          "  http://nodejs.org/";
+  echo          "  ------------------------ $stop";
+  echo "  Node and npm can be downloaded from$red http://nodejs.org/download/$stop";
+  echo
+missingRequirements=true
+}
+
+command -v npm >/dev/null || {
+  echo "$red$bold  Missing npm $stop";
   echo      "$red  more information at";
   echo          "  http://nodejs.org/";
   echo          "  ------------------------ $stop";
@@ -144,11 +154,11 @@ test -d $INSTALL_DIR && command -v curl > /dev/null && {
 
   width=$(tput cols);
 
-  if test $width -gt 90; then
+  if test "$width" -gt 90; then
     dark_crystal_banner_wide;
   fi
 
-  if test $width -gt 39 && test $width -lt 90; then
+  if test "$width" -gt 39 && test "$width" -lt 90; then
     dark_crystal_banner_narrow;
   fi
 
