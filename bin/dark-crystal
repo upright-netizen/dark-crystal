@@ -21,6 +21,7 @@ test "$devMode" = true && {
   installDir=$(dirname "$rootDir");
 };
 
+resources=${rootDir}/resources;
 lib=${rootDir}/lib;
 
 #
