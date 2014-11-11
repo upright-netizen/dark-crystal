@@ -23,10 +23,13 @@ function install_prototype_dependencies {
   # make a node_modules folder locally so they don't get installed somewhere else on the path
   test -d node_modules || mkdir -p node_modules;
 
-  npm install --save-dev grunt-contrib-connect;
-  npm install --save-dev grunt-bower-requirejs;
+  npm install --save-dev gulp;
+  npm install --save-dev gulp-less;
+  npm install --save-dev gulp-watch;
+  npm install --save-dev gulp-webserver;
+  npm install --save-dev bower-requirejs;
 
-  bower install --save requirejs
+  bower install --save requirejs;
 }
 
 function create_prototype_folder {
@@ -66,12 +69,11 @@ function dark_crystal_new_prototype {
   fi
 
   local name=$1
-  local classification=prototype
 
   create_prototype_folder "$name";
   dark_crystal_generate_package_files;
   install_prototype_dependencies;
-  generate_prototype_html $name;
+  generate_prototype_html "$name";
 
   log
   log "Done." -c "green";

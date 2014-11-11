@@ -108,12 +108,12 @@ command -v npm >/dev/null || {
 missingRequirements=true
 }
 
-command -v grunt > /dev/null || {
-  echo "$red$bold  Missing grunt-cli $stop";
+command -v gulp > /dev/null || {
+  echo "$red$bold  Missing gulp $stop";
   echo      "$red  more information at";
-  echo          "  http://gruntjs.com/getting-started";
+  echo          "  https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md#getting-started";
   echo          "  ---------------------------------- $stop";
-  echo "  Grunt-cli can be installed by running$red npm install -g grunt-cli $stop";
+  echo "  Gulp can be installed by running$red npm install -g gulp $stop";
   echo
 missingRequirements=true
 }
