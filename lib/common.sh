@@ -1,30 +1,11 @@
 #!/usr/bin/env zsh
 
-function dark_crystal_generate_package_json {
-
+function dark_crystal_generate_file {
   local name=$1
   local version=$2
   local description=$3
   local author=$4
-
-#
-# Generate package.json
-#
-
-sed -e \
-  "s;%NAME%;$name;g" -e \
-  "s;%VERSION%;$version;g" -e \
-  "s;%DESCRIPTION%;$description;g" -e \
-  "s;%AUTHOR%;$author;g" \
-$resources/package.json.template > package.json
-
-}
-
-function dark_crystal_generate_bower_json {
-  local name=$1
-  local version=$2
-  local description=$3
-  local author=$4
+  local file=$5
 
   #
   # Generate bower.json
@@ -35,7 +16,7 @@ function dark_crystal_generate_bower_json {
     "s;%VERSION%;$version;g" -e \
     "s;%DESCRIPTION%;$description;g" -e \
     "s;%AUTHOR%;$author;g" \
-  $resources/bower.json.template > bower.json
+  "$resources/$file.template" > "$file"
 }
 
 function dark_crystal_generate_package_files {
@@ -63,6 +44,6 @@ function dark_crystal_generate_package_files {
   read "author?Author: ($defaultAuthor) ";
   author=${author:-$defaultAuthor};
 
-  dark_crystal_generate_package_json "$name" "$version" "$description" "$author";
-  dark_crystal_generate_bower_json "$name" "$version" "$description" "$author";
+  dark_crystal_generate_file "$name" "$version" "$description" "$author" "package.json";
+  dark_crystal_generate_file "$name" "$version" "$description" "$author" "bower.json";
 }
