@@ -16,15 +16,8 @@ function dark_crystal_update {
 }
 
 function dark_crystal_uninstall {
-  echo "${red}"
-  read -p "Are you sure? " -n 1 -r
-  echo
-  echo "${stop}"
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
-    test -d /usr/local/dark-crystal && rm -rf /usr/local/dark-crystal;
-    test -e /usr/local/bin/dark && rm /usr/local/bin/dark;
-  fi
+  test -d /usr/local/dark-crystal && rm -rf /usr/local/dark-crystal;
+  test -e /usr/local/bin/dark && rm /usr/local/bin/dark;
 }
 
 function dark_crystal_link {

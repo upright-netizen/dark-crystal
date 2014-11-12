@@ -89,6 +89,6 @@ USAGE
   test "$1" = "component" && shift && dark_crystal_new_component "$@";
   test "$1" = "prototype" && shift && dark_crystal_new_prototype "$@";
   test "$1" = "update" && shift && dark_crystal_update "$@";
-  test "$1" = 'uninstall' && shift && dark_crystal_uninstall "$@";
+  test "$1" = 'uninstall' && shift && dark_crystal_uninstall;
   # dev options
   test "$1" = 'link' && shift && dark_crystal_link "$@";
