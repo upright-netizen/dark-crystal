@@ -38,3 +38,31 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('default', ['less', 'watch', 'webserver']);
+
+// Production build tasks
+gulp.task('config-production', function () {
+  gulp.src('{Procfile,package.json}')
+  .pipe(gulp.dest('dist'));
+});
+
+gulp.task('html-production', function(){
+    gulp.src('*.html')
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('js-production', function(){
+    gulp.src('app/**/*.*', { base: './' })
+    .pipe(gulp.dest('dist'));
+
+    gulp.src('bower_components/**/*.*', { base: './' })
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('less-production', function(){
+    gulp.src('less/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('production', ['less-production', 'html-production', 'js-production', 'config-production']);
+

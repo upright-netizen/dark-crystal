@@ -87,3 +87,29 @@ function dark_crystal_new_prototype {
   log
 }
 
+function dark_crystal_deploy_prototype {
+  local folder="$1";
+
+  if test -d "$folder"; then
+    pushd $folder;
+    gulp production && cd dist;
+
+    # If the gulp build succeed then
+    # keep going
+    if test $? -eq 0; then
+      git init . && git add --all && git commit -m "prototype deploy.";
+      heroku create && git push heroku master;
+      heroku ps:scale web=1;
+    else
+      log "<< Deployment aborted." -c "red";
+      log
+    fi
+
+    popd;
+  else
+    log
+    log "That location doesn't exist." -c "red";
+    log
+  fi
+}
+
