@@ -1,13 +1,16 @@
 {
   "name": "%NAME%",
-  "repository": "",
   "version": "%VERSION%",
   "private": true,
   "description": "%DESCRIPTION%",
   "main": "Gruntfile.js",
   "scripts": {
-    "start": "gulp",
+    "start": "node index.js",
+    "dev" : "gulp",
     "test": "echo \"No tests\" && exit 1"
+  },
+  "engines" : {
+    "node" : "0.10.x"
   },
   "author": "%AUTHOR%",
   "license": "ISC"

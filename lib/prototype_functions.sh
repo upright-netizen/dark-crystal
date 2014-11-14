@@ -23,13 +23,17 @@ function install_prototype_dependencies {
   # make a node_modules folder locally so they don't get installed somewhere else on the path
   test -d node_modules || mkdir -p node_modules;
 
+  # dev dependencies
   npm install --save-dev gulp;
   npm install --save-dev gulp-less;
   npm install --save-dev gulp-watch;
   npm install --save-dev gulp-webserver;
   npm install --save-dev bower-requirejs;
-
   bower install --save requirejs;
+
+  # dependencies
+  npm install --save express
+
 }
 
 function create_prototype_folder {
