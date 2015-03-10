@@ -24,11 +24,7 @@ function install_prototype_dependencies {
   test -d node_modules || mkdir -p node_modules;
 
   # dev dependencies
-  npm install --save-dev gulp;
-  npm install --save-dev gulp-less;
-  npm install --save-dev gulp-watch;
-  npm install --save-dev gulp-webserver;
-  npm install --save-dev bower-requirejs;
+  npm install --save-dev gulp gulp-less gulp-watch gulp-webserver bower-requirejs;
   bower install --save requirejs;
 
   # dependencies

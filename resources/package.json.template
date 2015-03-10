@@ -5,8 +5,8 @@
   "description": "%DESCRIPTION%",
   "main": "Gruntfile.js",
   "scripts": {
-    "start": "node index.js",
-    "dev" : "gulp",
+    "start": "node index",
+    "dev" : "gulp & node index",
     "test": "echo \"No tests\" && exit 1"
   },
   "engines" : {
