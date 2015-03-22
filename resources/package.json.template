@@ -3,10 +3,9 @@
   "version": "%VERSION%",
   "private": true,
   "description": "%DESCRIPTION%",
-  "main": "Gruntfile.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index",
-    "dev" : "gulp & node index",
+    "dev" : "gulp & node server",
     "test": "echo \"No tests\" && exit 1"
   },
   "engines" : {
