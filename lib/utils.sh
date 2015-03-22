@@ -21,7 +21,7 @@ function dark_crystal_uninstall {
 }
 
 function dark_crystal_link {
-  devLocation=${1:-~/Code/dark-crystal};
+  devLocation=${1:-~/Code/uprightnetizen/dark-crystal};
 
   test -d "$devLocation" && {
     echo
