@@ -1,0 +1,30 @@
+{
+  "name": "dark-crystal",
+  "version": "0.1.0",
+  "description": "A commandline utility to generate applications, prototypes, components, etc",
+  "author": "Nathan Stilwell",
+  "preferGlobal": true,
+  "bin": {
+    "dark": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upright-netizen/dark-crystal.git"
+  },
+  "keywords": [
+    "generator",
+    "dark-crystal"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/upright-netizen/dark-crystal/issues"
+  },
+  "homepage": "https://github.com/upright-netizen/dark-crystal",
+  "dependencies": {
+    "minimist": "^1.1.1",
+    "rainbow-barf": "^0.1.0"
+  }
+}
