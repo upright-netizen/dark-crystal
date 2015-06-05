@@ -8,6 +8,7 @@
     "dark": "index.js"
   },
   "scripts": {
+    "install": "scripts/install.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +26,8 @@
   "homepage": "https://github.com/upright-netizen/dark-crystal",
   "dependencies": {
     "minimist": "^1.1.1",
-    "rainbow-barf": "^0.1.0"
+    "q": "^1.4.1",
+    "rainbow-barf": "^0.1.1",
+    "superenv": "0.0.1"
   }
 }

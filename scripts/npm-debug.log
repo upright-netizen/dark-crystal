@@ -1,0 +1,54 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'link' ]
+2 info using npm@2.7.4
+3 info using node@v0.12.2
+4 verbose linkPkg /Users/nstilwell/Code/dark-crystal
+5 silly gentlyRm /usr/local/lib/node_modules/dark-crystal is being purged
+6 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/dark-crystal
+7 verbose link build target /usr/local/lib/node_modules/dark-crystal
+8 verbose install where, what [ '/Users/nstilwell/Code/dark-crystal', [] ]
+9 verbose install where, deps [ '/Users/nstilwell/Code/dark-crystal',
+9 verbose install   [ 'minimist', 'q', 'rainbow-barf', 'superenv' ] ]
+10 verbose install where, peers [ '/Users/nstilwell/Code/dark-crystal', [] ]
+11 info preinstall dark-crystal@0.1.0
+12 verbose already installed skipping q@^1.4.1 /Users/nstilwell/Code/dark-crystal
+13 verbose already installed skipping rainbow-barf@^0.1.0 /Users/nstilwell/Code/dark-crystal
+14 verbose already installed skipping superenv@0.0.1 /Users/nstilwell/Code/dark-crystal
+15 verbose already installed skipping minimist@^1.1.1 /Users/nstilwell/Code/dark-crystal
+16 silly install resolved []
+17 info build /Users/nstilwell/Code/dark-crystal
+18 verbose linkStuff [ false, false, false, '/Users/nstilwell/Code' ]
+19 info linkStuff dark-crystal@0.1.0
+20 verbose linkBins dark-crystal@0.1.0
+21 verbose linkMans dark-crystal@0.1.0
+22 verbose rebuildBundles dark-crystal@0.1.0
+23 verbose rebuildBundles [ 'minimist', 'q', 'rainbow-barf', 'superenv' ]
+24 info install dark-crystal@0.1.0
+25 verbose unsafe-perm in lifecycle true
+26 info dark-crystal@0.1.0 Failed to exec install script
+27 verbose stack Error: dark-crystal@0.1.0 install: `scripts/install.js`
+27 verbose stack Exit status 1
+27 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+27 verbose stack     at EventEmitter.emit (events.js:110:17)
+27 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:14:12)
+27 verbose stack     at ChildProcess.emit (events.js:110:17)
+27 verbose stack     at maybeClose (child_process.js:1015:16)
+27 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+28 verbose pkgid dark-crystal@0.1.0
+29 verbose cwd /Users/nstilwell/Code/dark-crystal/scripts
+30 error Darwin 13.4.0
+31 error argv "node" "/usr/local/bin/npm" "link"
+32 error node v0.12.2
+33 error npm  v2.7.4
+34 error code ELIFECYCLE
+35 error dark-crystal@0.1.0 install: `scripts/install.js`
+35 error Exit status 1
+36 error Failed at the dark-crystal@0.1.0 install script 'scripts/install.js'.
+36 error This is most likely a problem with the dark-crystal package,
+36 error not with npm itself.
+36 error Tell the author that this fails on your system:
+36 error     scripts/install.js
+36 error You can get their info via:
+36 error     npm owner ls dark-crystal
+36 error There is likely additional logging output above.
+37 verbose exit [ 1, true ]

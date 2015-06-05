@@ -8,7 +8,9 @@
 
 var minimist = require('minimist');
 var RainbowBarf = require('rainbow-barf');
+var superenv = require('superenv');
 
+var darkHomeDir = process.env.HOME + '/.darkcrystal';
 var argv = minimist(process.argv.slice(2));
 var log = new RainbowBarf();
 
@@ -29,13 +31,6 @@ var log = new RainbowBarf();
 //  Stubs and Templates
 // installDir=/usr/local;
 // rootDir=${installDir}/dark-crystal;
-//
-//  if in dev mode, reset base directories
-//
-// test "$devMode" = true && {
-//   rootDir=$(dirname "$linkLocationDir");
-//   installDir=$(dirname "$rootDir");
-// };
 
 // export resources=${rootDir}/resources;
 // lib=${rootDir}/lib;
@@ -102,11 +97,20 @@ if (!command) {
   return;
 }
 
+var env = superenv('darkcrystal');
+
+// env.projects.forEach(function eachProject (project) {
+//   console.log(project.title);
+// });
+
+
+
 // sample running a command
-var exec = require('child_process').exec;
-var child = exec('ls -al', function (err, stdout, stderr) {
-  console.log(stdout);
-});
+// var exec = require('child_process').exec;
+// var child = exec('ls -al', function (err, stdout, stderr) {
+//   console.log(stdout);
+// });
+
 
 // use commander
 
